@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sCtx.drawImage(img, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
                 initPins(NUM_PINS, PIN_RADIUS);
                 drawPins();
-                imageUpload.dispatchEvent(new CustomEvent('image-loaded'));
+                
             };
             img.src = event.target.result;
         };
@@ -139,5 +139,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    initPins(NUM_PINS, PIN_RADIUS);
-});
+    });

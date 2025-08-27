@@ -42,7 +42,8 @@ export function findBestNextPin(startPinIndex, pins, imageData, CANVAS_SIZE, NUM
 
     for (let i = 0; i < NUM_PINS; i++) {
         if (i === startPinIndex) continue;
-        if (Math.abs(i - startPinIndex) % NUM_PINS < 5) continue;
+        const dist = Math.abs(i - startPinIndex);
+        if (Math.min(dist, NUM_PINS - dist) < 5) continue;
 
         const score = calculateLineScore(pins[startPinIndex], pins[i], imageData, CANVAS_SIZE);
         if (score > bestScore) {
