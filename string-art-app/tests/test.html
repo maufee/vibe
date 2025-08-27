@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>String Art Algorithm Tests</title>
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+</head>
+<body>
+    <div id="mocha"></div>
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
+    <script src="https://unpkg.com/chai/chai.js"></script>
+    <script>
+        mocha.setup('bdd');
+        const expect = chai.expect;
+    </script>
+
+    <!-- Load algorithm and test files as modules -->
+    <script type="module" src="../algorithms.js"></script>
+    <script type="module" src="test_greedy.js"></script>
+
+    <script type="module">
+        mocha.run();
+    </script>
+</body>
+</html>
