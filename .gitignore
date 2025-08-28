@@ -1,2 +1,5 @@
 /.gemini/
 /gha-creds-*.json
+/.vscode/
+node_modules/
+/.venv/
