@@ -19,11 +19,12 @@ describe('Simulated Annealing Algorithm Tests', () => {
                 targetImageData[idx+2] = 0;
             }
 
-            const options = { PINS, CANVAS_SIZE, LINE_DARKNESS, MAX_ITERATIONS, targetImageData };
+            const options = { PINS, CANVAS_SIZE, LINE_DARKNESS, MAX_ITERATIONS, targetImageData, T_start: 1.0, T_min: 0.00001, alpha: 0.9 };
             const saGenerator = a.calculateSAPath(options);
 
             let result = saGenerator.next();
-            let lastError = Infinity;
+            const initialError = result.value.error;
+            let lastError = initialError;
             while(!result.done) {
                 expect(result.value.path).to.be.an('array');
                 expect(result.value.error).to.be.a('number');
@@ -31,6 +32,7 @@ describe('Simulated Annealing Algorithm Tests', () => {
                 lastError = result.value.error;
                 result = saGenerator.next();
             }
+            expect(lastError).to.be.lessThan(initialError);
         });
     });
 

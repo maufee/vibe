@@ -130,6 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
             LINE_DARKNESS,
             MAX_ITERATIONS: 500,
             targetImageData: rCtx.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE).data,
+            T_start: 1.0,
+            T_min: 0.00001,
+            alpha: 0.9,
         };
 
         const saGenerator = calculateSAPath(options);

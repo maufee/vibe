@@ -101,9 +101,8 @@ export function* calculateSAPath(options) {
     let currentImageData = renderPathToImageData(currentPath, PINS, CANVAS_SIZE, LINE_DARKNESS);
     let currentError = calculateImageError(currentImageData, targetImageData);
 
-    let T = 1.0;
-    const T_min = 0.00001;
-    const alpha = 0.9;
+    const { T_start, T_min, alpha } = options;
+    let T = T_start;
 
     for (let i = 0; i < MAX_ITERATIONS; i++) {
         // 2. Create a new candidate path
