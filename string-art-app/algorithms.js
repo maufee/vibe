@@ -41,9 +41,9 @@ export function findBestNextPin(startPinIndex, pins, imageData, CANVAS_SIZE, NUM
     let bestScore = -Infinity;
 
     for (let i = 0; i < NUM_PINS; i++) {
-    if (i === startPinIndex) continue;
-    const dist = Math.abs(i - startPinIndex);
-    if (Math.min(dist, NUM_PINS - dist) < 5) continue;
+        if (i === startPinIndex) continue;
+        const dist = Math.abs(i - startPinIndex);
+        if (Math.min(dist, NUM_PINS - dist) < 5) continue;
 
         const score = calculateLineScore(pins[startPinIndex], pins[i], imageData, CANVAS_SIZE);
         if (score > bestScore) {
@@ -65,7 +65,6 @@ export function updateResidualInPlace(p1, p2, imageData, CANVAS_SIZE, LINE_DARKN
     }
 }
 
-<<<<<<< HEAD
 export function calculateImageError(imageA, imageB) {
     let error = 0;
     for (let i = 0; i < imageA.length; i += 4) {
@@ -132,8 +131,6 @@ export function* calculateSAPath(options) {
     }
 }
 
-=======
->>>>>>> origin/main
 export function* calculateGreedyPath(initialResidualData, pins, options) {
     const { MAX_LINES, CANVAS_SIZE, NUM_PINS, LINE_DARKNESS } = options;
     let residualData = new Uint8ClampedArray(initialResidualData.data);
