@@ -1,2 +1,7 @@
 /.gemini/
 /gha-creds-*.json
+/.vscode/
+node_modules/
+/.venv/
+__pycache__/
+*.pyc
