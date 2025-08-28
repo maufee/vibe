@@ -72,7 +72,7 @@ describe('Greedy Algorithm Tests', () => {
 
             const expectedData = new Uint8ClampedArray([
                 0, 0, 0, 0,
-                80, 80, 30, 30,
+                80, 80, 30, 30, // 100-20, 100-20, 50-20, 50-20
                 0, 0, 0, 0,
                 0, 0, 0, 0,
             ].flatMap(p => [p, p, p, 255]));
