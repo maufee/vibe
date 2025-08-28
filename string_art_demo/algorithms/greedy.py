@@ -77,25 +77,23 @@ class GreedyAlgorithm(BaseStringArtAlgorithm):
 
         for line_num in range(max_lines):
             best_chord = None
-            min_error = float('inf')
+            max_score = -float('inf')
+
+            residual = inverted_target.astype(np.int32) - string_art_canvas.astype(np.int32)
 
             for next_pin in range(num_pins):
                 if next_pin == current_pin:
                     continue
 
                 chord = tuple(sorted((current_pin, next_pin)))
-
                 if chord not in line_canvases:
                     continue
 
-                line_canvas = line_canvases[chord]
+                line_canvas = line_canvases[chord].astype(np.int32)
+                score = 2 * np.sum(residual * line_canvas) - np.sum(line_canvas ** 2)
 
-                new_canvas = string_art_canvas + line_canvas
-
-                error = np.sum((inverted_target.astype(np.int32) - new_canvas.astype(np.int32))**2)
-
-                if error < min_error:
-                    min_error = error
+                if score > max_score:
+                    max_score = score
                     best_chord = (current_pin, next_pin)
 
             if best_chord is None:
@@ -104,16 +102,14 @@ class GreedyAlgorithm(BaseStringArtAlgorithm):
             sequence.append(best_chord)
             best_chord_sorted = tuple(sorted(best_chord))
             string_art_canvas += line_canvases[best_chord_sorted]
-
             current_pin = best_chord[1]
 
             display_canvas = np.clip(string_art_canvas, 0, 255).astype(np.uint8)
-
             residual = np.clip(inverted_target.astype(np.int32) - string_art_canvas.astype(np.int32), 0, 255).astype(np.uint8)
 
             yield {
                 "line_num": line_num + 1,
                 "chord": best_chord,
-                "canvas": 255 - display_canvas, # Invert back for display
+                "canvas": 255 - display_canvas,
                 "residual": residual
             }

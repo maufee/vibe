@@ -120,7 +120,11 @@ with col3:
     st.header("Algorithm Visualization")
     extra_vis_placeholder = st.empty()
     if st.session_state.extra_vis is not None:
-        extra_vis_placeholder.image(st.session_state.extra_vis, caption="Algorithm-specific data", use_container_width=True)
+        import matplotlib.pyplot as plt
+        if isinstance(st.session_state.extra_vis, plt.Figure):
+            extra_vis_placeholder.pyplot(st.session_state.extra_vis)
+        else:
+            extra_vis_placeholder.image(st.session_state.extra_vis, caption="Algorithm-specific data", use_container_width=True)
     elif target_image is not None:
         extra_vis_placeholder.image(target_image, caption="Residual, heatmap, etc.", use_container_width=True)
 

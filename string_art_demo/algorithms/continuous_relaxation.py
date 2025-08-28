@@ -71,7 +71,12 @@ class ContinuousRelaxationAlgorithm(BaseStringArtAlgorithm):
                 for _ in range(num_wraps[k]):
                     G.add_edge(i, j)
 
-        # Make the graph Eulerian
+        # Make the graph Eulerian by first connecting it, then balancing degrees
+        if G.number_of_edges() > 0 and not nx.is_connected(G):
+            components = list(nx.connected_components(G))
+            for i in range(len(components) - 1):
+                G.add_edge(next(iter(components[i])), next(iter(components[i+1])))
+
         odd_degree_nodes = [n for n, d in G.degree() if d % 2 != 0]
         for i in range(0, len(odd_degree_nodes), 2):
             if i + 1 < len(odd_degree_nodes):
@@ -80,22 +85,11 @@ class ContinuousRelaxationAlgorithm(BaseStringArtAlgorithm):
         yield {"status": "Building string path...", "progress": 0.8}
 
         # 5. Extract Euler trail
-        if not nx.is_eulerian(G):
-            # If not Eulerian, find an Eulerian path (starts/ends at different nodes)
-            # This should be handled by the logic above, but as a fallback:
-            if G.number_of_edges() > 0:
-                start_node = list(G.nodes())[0] # Pick an arbitrary start
-                if odd_degree_nodes:
-                    start_node = odd_degree_nodes[0]
-
-                path = list(nx.eulerian_path(G, source=start_node))
-            else:
-                path = []
-        else:
-            if G.number_of_edges() > 0:
-                path = list(nx.eulerian_circuit(G, source=list(G.nodes())[0]))
-            else:
-                path = []
+        path = []
+        if G.number_of_edges() > 0:
+            odd_nodes = [n for n, d in G.degree() if d % 2 != 0]
+            start_node = odd_nodes[0] if odd_nodes else list(G.nodes())[0]
+            path = list(nx.eulerian_path(G, source=start_node))
 
         # Yield the final animation steps from the path
         string_art_canvas = np.zeros(image_shape, dtype=np.uint16)

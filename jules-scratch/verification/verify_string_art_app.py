@@ -8,7 +8,9 @@ def verify_app():
 
         try:
             # 1. Go to the app
-            page.goto("http://localhost:8501", timeout=60000)
+            import os
+            base_url = os.environ.get("BASE_URL", "http://localhost:8501")
+            page.goto(base_url, timeout=60000)
 
             # Wait for the app to load
             expect(page.get_by_text("Interactive String Art Generator")).to_be_visible(timeout=30000)
@@ -19,13 +21,13 @@ def verify_app():
             # 3. Select the "Continuous Relaxation + Eulerization" algorithm
             page.get_by_text("Greedy Residual").click()
             page.get_by_text("Continuous Relaxation + Eulerization").click()
-            time.sleep(1) # wait for UI to update
+            expect(page.get_by_text("This algorithm is computationally intensive and may be slow.")).to_be_visible()
             page.screenshot(path="jules-scratch/verification/02_continuous_relaxation_selected.png")
 
             # 4. Select the "Simulated Annealing" algorithm
             page.get_by_text("Continuous Relaxation + Eulerization").click()
             page.get_by_text("Simulated Annealing").click()
-            time.sleep(1) # wait for UI to update
+            expect(page.get_by_text("Number of Lines (Sequence Length)")).to_be_visible()
             page.screenshot(path="jules-scratch/verification/03_simulated_annealing_selected.png")
 
             # 5. Generate string art with Simulated Annealing

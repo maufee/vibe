@@ -11,7 +11,7 @@ class SimulatedAnnealingAlgorithm(BaseStringArtAlgorithm):
 
     def _draw_line_on_canvas(self, canvas, start_pin_coord, end_pin_coord, line_darkness=25):
         rr, cc = skimage_line(start_pin_coord[0], start_pin_coord[1], end_pin_coord[0], end_pin_coord[1])
-        canvas[rr, cc] = np.minimum(canvas[rr, cc] + line_darkness, 255)
+        canvas[rr, cc] += line_darkness
 
     def _calculate_error(self, canvas, target):
         return np.sum((target.astype(np.int32) - canvas.astype(np.int32))**2)
@@ -60,38 +60,37 @@ class SimulatedAnnealingAlgorithm(BaseStringArtAlgorithm):
         while temp > end_temp:
             iteration += 1
 
-            # 2. Propose a local change (reroute a subpath)
-            # Pick a random point in the sequence to modify
             if not current_sequence:
                 break
 
             idx_to_modify = random.randint(0, len(current_sequence) - 1)
-
-            # Create a new random connection
-            start_pin = current_sequence[idx_to_modify][0]
+            old_line = current_sequence[idx_to_modify]
+            start_pin = old_line[0]
             new_end_pin = random.randint(0, num_pins - 1)
             while new_end_pin == start_pin:
                 new_end_pin = random.randint(0, num_pins - 1)
 
+            # Incremental update: subtract old line, add new line
+            new_canvas = np.array(current_canvas, copy=True)
+            rr_old, cc_old = skimage_line(pin_coords[old_line[0]][0], pin_coords[old_line[0]][1], pin_coords[old_line[1]][0], pin_coords[old_line[1]][1])
+            new_canvas[rr_old, cc_old] -= line_darkness
+            rr_new, cc_new = skimage_line(pin_coords[start_pin][0], pin_coords[start_pin][1], pin_coords[new_end_pin][0], pin_coords[new_end_pin][1])
+            new_canvas[rr_new, cc_new] += line_darkness
+
             new_sequence = list(current_sequence)
             new_sequence[idx_to_modify] = (start_pin, new_end_pin)
-
-            # If we changed a link in the middle, we need to reconnect the chain
             if idx_to_modify < len(current_sequence) - 1:
                 next_start_pin = new_end_pin
                 next_end_pin = current_sequence[idx_to_modify+1][1]
                 new_sequence[idx_to_modify+1] = (next_start_pin, next_end_pin)
 
-            new_canvas = self._get_canvas_from_sequence(new_sequence, pin_coords, target_image.shape, line_darkness)
             new_error = self._calculate_error(new_canvas, inverted_target)
 
-            # 3. Decide whether to accept the change
             delta_error = new_error - current_error
             accepted = False
             if delta_error < 0:
                 accepted = True
             else:
-                # Accept worse solutions with some probability
                 acceptance_prob = math.exp(-delta_error / temp)
                 if random.random() < acceptance_prob:
                     accepted = True
@@ -101,7 +100,6 @@ class SimulatedAnnealingAlgorithm(BaseStringArtAlgorithm):
                 current_error = new_error
                 current_canvas = new_canvas
 
-            # 4. Cool the temperature
             temp *= cooling_rate
 
             if iteration % 10 == 0:
@@ -114,5 +112,5 @@ class SimulatedAnnealingAlgorithm(BaseStringArtAlgorithm):
                     "line_num": iteration
                 }
 
-        final_canvas = np.clip(self._get_canvas_from_sequence(current_sequence, pin_coords, target_image.shape, line_darkness), 0, 255).astype(np.uint8)
+        final_canvas = np.clip(current_canvas, 0, 255).astype(np.uint8)
         yield {"status": "Done!", "progress": 1.0, "canvas": 255 - final_canvas}
