@@ -1,4 +1,4 @@
-import { calculateGreedyPath } from './algorithms.js';
+import { calculateGreedyPath, calculateSAPath, renderPathToImageData } from './algorithms.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const imageUpload = document.getElementById('image-upload');
@@ -66,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 sCtx.drawImage(img, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
                 initPins(NUM_PINS, PIN_RADIUS);
                 drawPins();
-                
             };
             img.src = event.target.result;
         };
@@ -117,12 +116,59 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(step);
     }
 
+<<<<<<< HEAD
+=======
+    function runSAAlgorithm() {
+        console.log('Starting Simulated Annealing Algorithm');
+        startBtn.disabled = true;
+
+        sCtx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+        initPins(NUM_PINS, PIN_RADIUS);
+        drawPins();
+
+        const options = {
+            PINS: pins,
+            CANVAS_SIZE,
+            LINE_DARKNESS,
+            MAX_ITERATIONS: 500,
+            targetImageData: rCtx.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE).data,
+        };
+
+        const saGenerator = calculateSAPath(options);
+
+        function step() {
+            const result = saGenerator.next();
+            if (result.done) {
+                console.log('Finished.');
+                startBtn.disabled = false;
+                return;
+            }
+
+            const { path, error, temp, iteration } = result.value;
+
+            // Animate the path
+            const renderedImageData = renderPathToImageData(path, pins, CANVAS_SIZE, LINE_DARKNESS);
+            const rendered = new ImageData(new Uint8ClampedArray(renderedImageData), CANVAS_SIZE, CANVAS_SIZE);
+            sCtx.putImageData(rendered, 0, 0);
+
+            // For SA, we don't really have a 'residual' in the same way.
+            // We can show the current rendered path on the right canvas for comparison.
+            rCtx.putImageData(rendered, 0, 0);
+
+            if (iteration % 100 === 0) {
+                console.log(`Iteration: ${iteration}, Error: ${error}, Temp: ${temp}`);
+            }
+
+            requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+    }
+
     const algorithms = {
         'greedy': {
             name: 'Greedy Residual',
             run: runGreedyAlgorithm
         },
-        // Other algorithms are disabled for now
     };
 
     startBtn.addEventListener('click', () => {
@@ -137,6 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             alert('Selected algorithm not found or not implemented.');
         }
-    });
+    initPins(NUM_PINS, PIN_RADIUS);
+});
 
-    });

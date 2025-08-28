@@ -7,7 +7,7 @@ This is an interactive web application for visualizing string art algorithms. It
 1.  **No build step is required.** This is a static web application built with HTML, CSS, and vanilla JavaScript.
 2.  You can serve the files with a simple local web server. For example, using Python's built-in server:
     ```bash
-    python3 -m http.server
+        python3 -m http.server
     ```
 3.  Open your web browser and navigate to `http://localhost:8000/string-art-app/`.
 
