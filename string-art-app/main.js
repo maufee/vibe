@@ -66,6 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 sCtx.drawImage(img, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
                 initPins(NUM_PINS, PIN_RADIUS);
                 drawPins();
+<<<<<<< HEAD
+=======
+                
+>>>>>>> origin/main
             };
             img.src = event.target.result;
         };
@@ -117,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     function runSAAlgorithm() {
         console.log('Starting Simulated Annealing Algorithm');
@@ -164,11 +169,17 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(step);
     }
 
+=======
+>>>>>>> origin/main
     const algorithms = {
         'greedy': {
             name: 'Greedy Residual',
             run: runGreedyAlgorithm
         },
+<<<<<<< HEAD
+=======
+        // Other algorithms are disabled for now
+>>>>>>> origin/main
     };
 
     startBtn.addEventListener('click', () => {
@@ -183,6 +194,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             alert('Selected algorithm not found or not implemented.');
         }
+<<<<<<< HEAD
     initPins(NUM_PINS, PIN_RADIUS);
 });
 
+=======
+    });
+
+    });
+>>>>>>> origin/main

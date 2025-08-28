@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Art Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>String Art Simulator</h1>
+    <div class="container">
+        <div class="controls">
+            <h2>Controls</h2>
+            <div>
+                <label for="image-upload">Upload Image:</label>
+                <input type="file" id="image-upload" accept="image/*">
+            </div>
+            <div>
+                <label for="algorithm-select">Choose Algorithm:</label>
+                <select id="algorithm-select">
+                    <option value="greedy">Greedy Residual</option>
+                    <option value="continuous" disabled>Continuous Relaxation + Eulerization</option>
+                    <option value="annealing" disabled>Simulated Annealing</option>
+                    <option value="radon" disabled>Radon / Hough Transform</option>
+                    <option value="rl" disabled>Reinforcement Learning</option>
+                    <option value="beam" disabled>Beam Search</option>
+                    <option value="tsp" disabled>TSP-Style Polyline</option>
+                    <option value="multi" disabled>Multi-Objective Optimization</option>
+                </select>
+            </div>
+            <button id="start-btn">Start</button>
+        </div>
+        <div class="canvas-container">
+            <div>
+                <h3>String Art</h3>
+                <canvas id="string-art-canvas"></canvas>
+            </div>
+            <div>
+                <h3>Residual</h3>
+                <canvas id="residual-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>

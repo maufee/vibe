@@ -65,6 +65,7 @@ export function updateResidualInPlace(p1, p2, imageData, CANVAS_SIZE, LINE_DARKN
     }
 }
 
+<<<<<<< HEAD
 export function calculateImageError(imageA, imageB) {
     let error = 0;
     for (let i = 0; i < imageA.length; i += 4) {
@@ -131,6 +132,8 @@ export function* calculateSAPath(options) {
     }
 }
 
+=======
+>>>>>>> origin/main
 export function* calculateGreedyPath(initialResidualData, pins, options) {
     const { MAX_LINES, CANVAS_SIZE, NUM_PINS, LINE_DARKNESS } = options;
     let residualData = new Uint8ClampedArray(initialResidualData.data);

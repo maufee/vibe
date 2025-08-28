@@ -120,6 +120,7 @@ describe('Greedy Algorithm Tests', () => {
         });
     });
 <<<<<<< HEAD
+<<<<<<< HEAD
 });
 =======
 });
@@ -203,3 +204,6 @@ describe('Greedy Algorithm Tests', () => {
     });
 });
 >>>>>>> origin/feature/string-art-webapp
+=======
+});
+>>>>>>> origin/main
